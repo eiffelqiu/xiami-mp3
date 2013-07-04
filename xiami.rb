@@ -1,22 +1,21 @@
+#encoding: utf-8
 #!/usr/bin/ruby
+
+require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 require 'cgi'
 require 'sinatra'
 
 get '/' do
-  "<form method ='post' action ='/xiami'><input name='xid' /> <input type=submit> </form>"
+  "虾米歌曲编号: <form method ='post' action ='/xiami'><input name='xid' /> <br/> <input type=submit> </form>"
 end
 
 post "/xiami" do
-	puts params[:xid]
-	xiami = params[:xid]
-	output = ''
-	doc = Nokogiri::XML(open("http://www.xiami.com/widget/xml-single/uid/0/sid/#{xiami}").read)
+	doc = Nokogiri::XML(open("http://www.xiami.com/widget/xml-single/uid/0/sid/#{params[:xid]}").read)
 	node_values = doc.search('//trackList/track/location').map do |n|
-	  output = mp3url(n.text)
+	  mp3url(n.text)
 	end  
-	output
 end
 
 def mp3url(str)
