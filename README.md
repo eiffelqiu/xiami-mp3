@@ -5,12 +5,16 @@ How to get xiami website's mp3 download address
 Usage
 =======
 
-1: how to run
+1: prepare for rubygems
+-------
+	$ bundle install
+
+2: how to run?
 -------
 	$ ruby xiami.rb
 ![usage1](https://raw.github.com/eiffelqiu/xiami-mp3/master/capture1.png)
 
-2: input xiami song id, click submit to ge the mp3
+3: open 'http://localhost:4567/' in your web browser, input xiami song id, click submit to ge the mp3 download address.
 -------
 ![usage2](https://raw.github.com/eiffelqiu/xiami-mp3/master/capture2.png)
 ![usage3](https://raw.github.com/eiffelqiu/xiami-mp3/master/capture3.png)
