@@ -9,7 +9,7 @@ get '/' do
 end
 
 post "/xiami" do
-  param = "#{params[:xid]}".squeeze.strip[26..-1].split('?').first #http://www.xiami.com/song/
+  param = "#{params[:xid]}".split('?').first.split('/').last
   doc = Nokogiri::XML(open("http://www.xiami.com/widget/xml-single/uid/0/sid/#{param}").read)
   doc.search('//trackList/track/location').map do |n|
     mp3url(n.text)
