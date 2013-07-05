@@ -70,6 +70,7 @@ __END__
             url: "/xiami",
             data: $('#mp3form').serialize(),
             success: function(data){
+              $("#msg").css("background-color","#cccccc");
               $("#msg").html("歌曲 mp3 下载地址: <p/> <font color=blue>" + data + "</font>")
             },
             error: function(){
@@ -86,6 +87,7 @@ __END__
             url: "/album",
             data: $('#albumform').serialize(),
             success: function(data){
+              $("#msg").css("background-color","#cccccc");
               $("#msg").html("专辑 mp3 下载地址: <p/> <font color=blue>" + data + "</font>")
             },
             error: function(){
