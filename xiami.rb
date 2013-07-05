@@ -63,6 +63,7 @@ __END__
     :javascript
       $(function() {
         $("form#mp3form").submit(function(e){
+          $("#msg").html("<font color=red>mp3 下载地址生成中...</font>");
           e.preventDefault();
           $.ajax({
             type: "POST",
@@ -78,6 +79,7 @@ __END__
         });
 
         $("form#albumform").submit(function(e){
+          $("#msg").html("<font color=red>mp3 下载地址生成中...</font>");
           e.preventDefault();
           $.ajax({
             type: "POST",
