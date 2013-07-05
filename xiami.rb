@@ -35,7 +35,7 @@ def mp3url(str)
     output << "#{new_s[p]}"
   end
   x = "h#{CGI::unescape(output).gsub('^', '0')}".split('.')[0...-1].join('.')
-  "#{x}.mp3"
+  "<a href='#{x}.mp3'>#{x}.mp3</a>"
 end
 
 __END__
