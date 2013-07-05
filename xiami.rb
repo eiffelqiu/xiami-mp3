@@ -1,15 +1,15 @@
 #encoding: utf-8
 #!/usr/bin/ruby
 
-%w[rubygems open-uri nokogiri sinatra cgi haml].each{ |gem| require gem }
+%w[rubygems open-uri nokogiri sinatra cgi haml].each { |gem| require gem }
+require "sinatra/reloader" if development?
 
 get '/' do
   haml :index
 end
 
 post "/xiami" do
-  p = "#{params[:xid]}"
-  param = p[26..-1].split('?').first         #http://www.xiami.com/song/
+  param = "#{params[:xid]}".squeeze.strip[26..-1].split('?').first #http://www.xiami.com/song/
   doc = Nokogiri::XML(open("http://www.xiami.com/widget/xml-single/uid/0/sid/#{param}").read)
   doc.search('//trackList/track/location').map do |n|
     mp3url(n.text)
@@ -44,7 +44,8 @@ __END__
 %html
   %head
     %meta(charset="utf-8")
-    %script{:type => 'text/javascript', :src => 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'}
+    %script{:type => 'text/javascript', :src => 'http://code.jquery.com/jquery-1.10.2.min.js'}
+    %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css")
     %title xiami mp3 url
     :javascript
       $(function() {
@@ -55,7 +56,7 @@ __END__
             url: "/xiami",
             data: $('#mp3form').serialize(),
             success: function(data){
-              $("#msg").html(data)
+              $("#msg").html("歌曲 mp3 下载地址:  <font color=blue>" + data + "</font>")
             },
             error: function(){
               $("#msg").html("No MP3")
@@ -64,12 +65,17 @@ __END__
         });
       });
   %body
-    %h1 虾米 mp3 获取器
-    = yield
+    %center
+      %div(class="container")
+        %div(class="hero-unit")
+          %h4 虾米 mp3 获取器
+          = yield
 
 @@index
 %form#mp3form(action="/xiami" method="POST")
   %div 输入虾米歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
-  %input#word(type="text" name="xid" size=60)
-  %input(type="submit" value="生成MP3下载地址")
+  %p
+  %input#word(type="text" name="xid" class="span5 input-large")
+  %p
+  %input(type="submit" value="生成 MP3 下载地址" class="btn btn-primary btn-large")
 #msg
