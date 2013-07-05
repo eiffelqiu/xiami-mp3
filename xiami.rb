@@ -1,18 +1,16 @@
 #encoding: utf-8
 #!/usr/bin/ruby
 
-require 'rubygems'
-require 'open-uri'
-require 'nokogiri'
-require 'cgi'
-require 'sinatra'
+%w[rubygems open-uri nokogiri sinatra cgi haml].each{ |gem| require gem }
 
 get '/' do
-  "<form method ='post' action ='/xiami'>输入虾米歌曲编号:<input name='xid' /><input type=submit  value='生成MP3下载地址'></form>"
+  haml :index
 end
 
 post "/xiami" do
-  doc = Nokogiri::XML(open("http://www.xiami.com/widget/xml-single/uid/0/sid/#{params[:xid]}").read)
+  p = "#{params[:xid]}"
+  param = p[26..-1].split('?').first         #http://www.xiami.com/song/
+  doc = Nokogiri::XML(open("http://www.xiami.com/widget/xml-single/uid/0/sid/#{param}").read)
   doc.search('//trackList/track/location').map do |n|
     mp3url(n.text)
   end
@@ -34,8 +32,44 @@ def mp3url(str)
     else
       p = right_rows * (cols + 1) + (x - right_rows) * cols + y
     end
-    output << new_s[p]
+    output << "#{new_s[p]}"
   end
-  "h#{CGI::unescape(output).gsub('^', '0')[0..-2]}"
+  x = "h#{CGI::unescape(output).gsub('^', '0')}".split('.')[0...-1].join('.')
+  "#{x}.mp3"
 end
 
+__END__
+@@layout
+!!! 5
+%html
+  %head
+    %meta(charset="utf-8")
+    %script{:type => 'text/javascript', :src => 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'}
+    %title xiami mp3 url
+    :javascript
+      $(function() {
+        $("form#mp3form").submit(function(e){
+          e.preventDefault();
+          $.ajax({
+            type: "POST",
+            url: "/xiami",
+            data: $('#mp3form').serialize(),
+            success: function(data){
+              $("#msg").html(data)
+            },
+            error: function(){
+              $("#msg").html("No MP3")
+            }
+          });
+        });
+      });
+  %body
+    %h1 虾米 mp3 获取器
+    = yield
+
+@@index
+%form#mp3form(action="/xiami" method="POST")
+  %div 输入虾米歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
+  %input#word(type="text" name="xid" size=60)
+  %input(type="submit" value="生成MP3下载地址")
+#msg
