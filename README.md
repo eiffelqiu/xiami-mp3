@@ -20,3 +20,4 @@ Usage
 	$ open http://localhost:4567
 	
 ![usage2](https://raw.github.com/eiffelqiu/xiami-mp3/master/capture2.png)
+![usage3](https://raw.github.com/eiffelqiu/xiami-mp3/master/capture3.png)
