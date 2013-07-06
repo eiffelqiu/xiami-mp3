@@ -20,11 +20,18 @@ post "/album" do
   afrom = "#{params[:afrom]}".split('?').first.split('/').last
   ato = "#{params[:ato]}".split('?').first.split('/').last
   output = ''
+  threads = []
   (afrom.to_i..ato.to_i).each do |o|
-    doc = Nokogiri::XML(open("http://www.xiami.com/widget/xml-single/uid/0/sid/#{o}").read)
-    doc.search('//trackList/track/location').map do |n|
-      output << mp3url(n.text) + "<p/>"
-    end
+    threads << Thread.new {
+      doc = Nokogiri::XML(open("http://www.xiami.com/widget/xml-single/uid/0/sid/#{o}").read)
+      doc.search('//trackList/track/location').map do |n|
+        Thread.current[:output] = mp3url(n.text) + "<p/>"
+      end
+    }
+  end
+  threads.each do |t|
+    t.join
+    output << t[:output]
   end
   output
 end
@@ -57,8 +64,9 @@ __END__
 %html
   %head
     %meta(charset="utf-8")
+    %link(rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css")
     %script{:type => 'text/javascript', :src => 'http://code.jquery.com/jquery-1.10.2.min.js'}
-    %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css")
+    %script{:type => 'text/javascript', :src => 'http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js'}
     %title xiami mp3 url
     :javascript
       $(function() {
@@ -70,7 +78,7 @@ __END__
             url: "/xiami",
             data: $('#mp3form').serialize(),
             success: function(data){
-              $("#msg").css("background-color","#cccccc");
+              $("#msg").css("background-color","#DDDDDD");
               $("#msg").html("歌曲 mp3 下载地址: <p/> <font color=blue>" + data + "</font>")
             },
             error: function(){
@@ -87,7 +95,7 @@ __END__
             url: "/album",
             data: $('#albumform').serialize(),
             success: function(data){
-              $("#msg").css("background-color","#cccccc");
+              $("#msg").css("background-color","#DDDDDD");
               $("#msg").html("专辑 mp3 下载地址: <p/> <font color=blue>" + data + "</font>")
             },
             error: function(){
@@ -103,25 +111,34 @@ __END__
           = yield
 
 @@index
-%h4 虾米单曲 mp3 下载
-%form#mp3form(action="/xiami" method="POST")
-  %div 输入虾米歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
-  %p
-  %input#word(type="text" name="xid" class="span5 input-large")
-  %p
-  %input(type="submit" value="生成 MP3 下载地址" class="btn btn-primary btn-large")
+
+%div.tabbable
+  %ul(class="nav nav-tabs")
+    %li(class="active")
+      %a(href="#tab1" data-toggle="tab") 虾米单曲 mp3
+    %li
+      %a(href="#tab2" data-toggle="tab") 虾米专辑 mp3
+  %div.tab-content
+    %div(class="tab-pane active" id="tab1")
+      %form#mp3form(action="/xiami" method="POST")
+        %div 输入虾米歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
+        %p
+        %input#word(type="text" name="xid" class="span5 input-large")
+        %p
+        %input(type="submit" value="生成 MP3 下载地址" class="btn btn-primary btn-large")
+    %div(class="tab-pane" id="tab2")
+      %form#albumform(action="/album" method="POST")
+        %p
+        %div 输入专辑第一首歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
+        %p
+        %input#word(type="text" name="afrom" class="span5 input-large")
+        %p
+        %div 输入专辑最后一首歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
+        %p
+        %input#word(type="text" name="ato" class="span5 input-large")
+        %p
+        %input(type="submit" value="生成专辑 MP3 下载地址" class="btn btn-primary btn-large")
+%p
 %hr
 %p
-%h4 虾米专辑 mp3 下载
-%form#albumform(action="/album" method="POST")
-  %p
-  %div 输入专辑第一首歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
-  %p
-  %input#word(type="text" name="afrom" class="span5 input-large")
-  %p
-  %div 输入专辑最后一首歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
-  %p
-  %input#word(type="text" name="ato" class="span5 input-large")
-  %p
-  %input(type="submit" value="生成专辑 MP3 下载地址" class="btn btn-primary btn-large")
 #msg
