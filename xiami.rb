@@ -129,7 +129,8 @@ __END__
     %div(class="tab-pane" id="tab2")
       %form#albumform(action="/album" method="POST")
         %p
-        %p 专辑网页: http://www.xiami.com/album/240537 <如诗般 宁静>
+        %div 专辑网址:  <如诗般 宁静>
+          %a(href="http://www.xiami.com/album/240537") http://www.xiami.com/album/240537
         %p
         %div 输入专辑第一首歌曲地址(例如: http://www.xiami.com/song/2783254?spm=a1z1s.3057849.0.0.8mNBuR , 注: 必须是这样的虾米歌曲网址):
         %p
