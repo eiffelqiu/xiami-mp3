@@ -131,15 +131,18 @@ __END__
         %p
         %div 例如: 专辑网址:  <如诗般 宁静> http://www.xiami.com/album/240537
         %p
-        %div 输入专辑第一首歌曲地址(例如: http://www.xiami.com/song/2783254?spm=a1z1s.3057849.0.0.8mNBuR , 注: 必须是这样的虾米歌曲网址):
+        %div 输入专辑第一首歌曲地址(例如: http://www.xiami.com/song/2783254?spm=a1z1s.3057849.0.0.8mNBuR , 注: 必须是类似网址):
         %p
         %input#word(type="text" name="afrom" class="span5 input-large")
         %p
-        %div 输入专辑最后一首歌曲地址(例如: http://www.xiami.com/song/2783264?spm=a1z1s.3057849.0.0.8mNBuR , 注: 必须是这样的虾米歌曲网址):
+        %div 输入专辑最后一首歌曲地址(例如: http://www.xiami.com/song/2783264?spm=a1z1s.3057849.0.0.8mNBuR , 注: 必须是类似网址):
         %p
         %input#word(type="text" name="ato" class="span5 input-large")
         %p
         %input(type="submit" value="生成专辑 MP3 下载地址" class="btn btn-primary btn-large")
+        %p
+        %div{ :style => "color:#F00"} 注意:
+        %strong 超过10首歌曲的专辑, 最好分开生成, 比如一张专辑30首歌曲, 可以选择 1-10, 11-20, 21-30 来生成 mp3 链接, 以免服务器因多线程问题无法生成mp3地址
 %p
 %hr
 %p
