@@ -121,7 +121,7 @@ __END__
   %div.tab-content
     %div(class="tab-pane active" id="tab1")
       %form#mp3form(action="/xiami" method="POST")
-        %div 输入虾米歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
+        %div 输入虾米歌曲地址(例如: http://www.xiami.com/song/369173 , 注: 必须是这样的虾米歌曲网址):
         %p
         %input#word(type="text" name="xid" class="span5 input-large")
         %p
@@ -129,11 +129,11 @@ __END__
     %div(class="tab-pane" id="tab2")
       %form#albumform(action="/album" method="POST")
         %p
-        %div 输入专辑第一首歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
+        %div 输入专辑第一首歌曲地址(例如: http://www.xiami.com/song/369173 , 注: 必须是这样的虾米歌曲网址):
         %p
         %input#word(type="text" name="afrom" class="span5 input-large")
         %p
-        %div 输入专辑最后一首歌曲地址(例如: http://www.xiami.com/song/369173?spm=0.0.0.0.IAjRbk):
+        %div 输入专辑最后一首歌曲地址(例如: http://www.xiami.com/song/369173 , 注: 必须是这样的虾米歌曲网址):
         %p
         %input#word(type="text" name="ato" class="span5 input-large")
         %p
