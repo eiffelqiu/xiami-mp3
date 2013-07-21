@@ -129,11 +129,13 @@ __END__
     %div(class="tab-pane" id="tab2")
       %form#albumform(action="/album" method="POST")
         %p
-        %div 输入专辑第一首歌曲地址(例如: http://www.xiami.com/song/369173 , 注: 必须是这样的虾米歌曲网址):
+        %p 专辑网页: http://www.xiami.com/album/240537 <如诗般 宁静>
+        %p
+        %div 输入专辑第一首歌曲地址(例如: http://www.xiami.com/song/2783254?spm=a1z1s.3057849.0.0.8mNBuR , 注: 必须是这样的虾米歌曲网址):
         %p
         %input#word(type="text" name="afrom" class="span5 input-large")
         %p
-        %div 输入专辑最后一首歌曲地址(例如: http://www.xiami.com/song/369173 , 注: 必须是这样的虾米歌曲网址):
+        %div 输入专辑最后一首歌曲地址(例如: http://www.xiami.com/song/2783264?spm=a1z1s.3057849.0.0.8mNBuR , 注: 必须是这样的虾米歌曲网址):
         %p
         %input#word(type="text" name="ato" class="span5 input-large")
         %p
