@@ -2,6 +2,8 @@ xiami-mp3
 =========
 How to get xiami website's mp3 download address
 
+	http://xiami-mp3.herokuapp.com/
+
 Usage
 =======
 
